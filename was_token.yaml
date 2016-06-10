@@ -85,17 +85,6 @@ parameters:
     type: string
     description: Hostname/IP address of the salt-master 
     label: Saltmaster address
-    
-  salt_api_user:
-    type: string
-    description: The user connecting to Salt API
-    label: Salt api user
-
-  salt_api_pass:
-    type: string
-    description: Password for connecting to Salt API
-    label: Salt api password
-    hidden: True
 
   salt_api_token:
     type: string
@@ -237,7 +226,7 @@ parameter_groups:
     - { label: 'Host Name Parameters', parameters: [was_vm_name] }
     - { label: 'Image Parameters', parameters: [flavor, key_name, availability_zone, image_id, virtuser_password, root_password, sw_repo_root] }
     - { label: 'Network Parameters', parameters: [network-id__for__patterns-service-dev-net, subnet_id_46fcd6d7-017e-437b-9921-d7fb9f76a7f2, public_network_id, security_group] }
-    - { label: 'Hidden Parameters', parameters: [salt_master_address, salt_api_user, salt_api_pass, salt_api_token] }
+    - { label: 'Hidden Parameters', parameters: [salt_master_address, salt_api_token] }
     - { label: 'WebSphere Parameters', parameters: [was_os_user, was_os_group, was_os_user_password, was_admin_username, was_admin_password, was_install_dir, was_profile_dir, im_install_dir, customer_log_dir_enabled, customer_log_dir, java7_enabled, was_fixpack, java_fixpack, sdk_64bit, was_profile_name, was_cell_name, was_node_name, was_server_name] }
     
 resources:
@@ -456,26 +445,29 @@ resources:
           template: |
             #!/usr/bin/env bash
             set -e
-            /opt/saltstack/embedded/bin/salt-wrapper.py orchestrate_heat $SALT_API_USER $SALT_API_PASS \
+            /opt/saltstack/embedded/bin/salt-wrapper.py orchestrate_heat dummyUser dummyPass \
               --environment $ENV \
               --automation $WORKLOAD_AUTOMATION \
               --orchestration $ORCHESTRATION \
               --wait_url '$WAIT_URL' \
               --stack_id $STACK_ID \
               --pillar_file /tmp/pillar.yaml \
-              --pillar stack_id=$STACK_ID
+              --pillar stack_id=$STACK_ID \
+              --reactor_flask \
+              --salt_token $SALT_API_TOKEN
 
-            echo  "            /opt/saltstack/embedded/bin/salt-wrapper.py orchestrate_heat $SALT_API_USER $SALT_API_PASS \
+            echo  "            /opt/saltstack/embedded/bin/salt-wrapper.py orchestrate_heat dummyUser dummyPass \
               --environment $ENV \
               --automation $WORKLOAD_AUTOMATION \
               --orchestration $ORCHESTRATION \
               --wait_url '$WAIT_URL' \
               --stack_id $STACK_ID \
               --pillar_file /tmp/pillar.yaml \
-              --pillar stack_id=$STACK_ID" >> /tmp/test
+              --pillar stack_id=$STACK_ID" \
+              --reactor_flask \
+              --salt_token $SALT_API_TOKEN >> /tmp/test
           params:
-            $SALT_API_USER: { get_param: salt_api_user}
-            $SALT_API_PASS: { get_param: salt_api_pass}
+            $SALT_API_TOKEN: { get_param: salt_api_token}
             $ENV: base
             $WORKLOAD_AUTOMATION:  ibm_was
             $ORCHESTRATION: ibm_was_v855_linux_standalone_orchestration_zeron
@@ -566,10 +558,8 @@ resources:
 
             wget http://159.122.222.80/sw_repo/salt/salt-wrapper.py -O /opt/saltstack/embedded/bin/salt-wrapper.py
 
-            /opt/saltstack/embedded/bin/salt-wrapper.py register $SALT_API_USER $SALT_API_PASS
+            /opt/saltstack/embedded/bin/salt-wrapper.py register dummyUser dummyPass $SALT_API_TOKEN
           params:
-            $SALT_API_USER: { get_param: salt_api_user}
-            $SALT_API_PASS: { get_param: salt_api_pass}
             $STACK_ID: { get_param: "OS::stack_id" }
             $SALT_MASTER: { get_param: salt_master_address }
             $SALT_API_TOKEN: { get_param: salt_api_token }
