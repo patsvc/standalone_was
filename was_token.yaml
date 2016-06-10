@@ -558,7 +558,7 @@ resources:
 
             wget http://159.122.222.80/sw_repo/salt/salt-wrapper.py -O /opt/saltstack/embedded/bin/salt-wrapper.py
 
-            /opt/saltstack/embedded/bin/salt-wrapper.py register dummyUser dummyPass $SALT_API_TOKEN
+            /opt/saltstack/embedded/bin/salt-wrapper.py register dummyUser dummyPass -k $SALT_API_TOKEN
           params:
             $STACK_ID: { get_param: "OS::stack_id" }
             $SALT_MASTER: { get_param: salt_master_address }
