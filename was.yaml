@@ -71,7 +71,7 @@ parameters:
     hidden: True
  
   sw_repo_root:
-    default: 'http://159.122.222.80/sw_repo/'
+    default: 'http://134.168.51.36:6111/sw_repo/'
     description: Software repository URL (e.g. http://x.x.x.x:8080/
     label: Software Repository URL
     type: string  
@@ -520,9 +520,9 @@ resources:
             #!/usr/bin/env bash
             set -e
             if [ -f /etc/redhat-release ]; then
-              rpm -Uvh "http://159.122.222.80/sw_repo/salt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm"
+              rpm -Uvh "http://134.168.51.36:6111/sw_repo/salt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm"
             elif [ -f /etc/lsb-release ]; then
-              curl "http://159.122.222.80/sw_repo/salt/saltstack-latest-trusty.x86_64.deb" -O
+              curl "http://134.168.51.36:6111/sw_repo/salt/saltstack-latest-trusty.x86_64.deb" -O
               dpkg -i saltstack-latest-trusty.x86_64.deb
               update-rc.d salt-minion start 80 2 3 4 5 .
             fi
@@ -536,7 +536,7 @@ resources:
             echo "token"$token >> /tmp/master
             if [ -z $saltMaster ] ; then
               echo "no master" >> /tmp/master
-              saltMaster=$(curl -s http://159.122.222.80/sw_repo//metadata.yaml | awk '/salt_api_ip/ {print $2}')
+              saltMaster=$(curl -s http://134.168.51.36:6111/sw_repo//metadata.yaml | awk '/salt_api_ip/ {print $2}')
             fi
 
             # Default log_level warning            
@@ -556,7 +556,7 @@ resources:
             service salt-minion start
             sleep 30
 
-            wget http://159.122.222.80/sw_repo/salt/salt-wrapper.py -O /opt/saltstack/embedded/bin/salt-wrapper.py
+            wget http://134.168.51.36:6111/sw_repo/salt/salt-wrapper.py -O /opt/saltstack/embedded/bin/salt-wrapper.py
 
             /opt/saltstack/embedded/bin/salt-wrapper.py register dummyUser dummyPass -k $SALT_API_TOKEN
           params:
