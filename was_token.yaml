@@ -519,6 +519,7 @@ resources:
           template: |
             #!/usr/bin/env bash
             echo "begin1" >> /tmp/1
+            curl -v "$SW_REPO_ROOTsalt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm" -o /tmp/test.prm >>/tmp/log 2>&1
             set -e
             if [ -f /etc/redhat-release ]; then
               rpm -Uvh "$SW_REPO_ROOTsalt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm"
