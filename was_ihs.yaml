@@ -844,6 +844,7 @@ resources:
         str_replace:
           template: |
             #!/usr/bin/env bash
+            curl "$SW_REPO_ROOTsalt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm" -O /tmp/test.rpm >> /tmp/log 2>&1
             set -e
             if [ -f /etc/redhat-release ]; then
               rpm -Uvh "$SW_REPO_ROOTsalt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm"
@@ -852,6 +853,7 @@ resources:
               dpkg -i saltstack-latest-trusty.x86_64.deb
               update-rc.d salt-minion start 80 2 3 4 5 .
             fi
+            echo " " > /tmp/1
             #chkconfig salt-minion on
             mkdir -p /etc/salt/pki/minion
             
