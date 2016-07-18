@@ -520,7 +520,8 @@ resources:
             #!/usr/bin/env bash
             set -e
             if [ -f /etc/redhat-release ]; then
-              curl -k "$SW_REPO_ROOTsalt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm" -o /tmp/salt.rpm
+              echo "$SW_REPO_ROOTsalt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm" >> /tmp/url
+              curl -k "$SW_REPO_ROOTsalt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm" -o /tmp/salt.rpm >> /tmp/log 2>&1
               rpm -Uvh /tmp/salt.rpm
               #rpm -Uvh "$SW_REPO_ROOTsalt/saltstack-latest-el$(rpm -qf --qf "%{VERSION}" /etc/redhat-release | cut -c1).x86_64.rpm"
             elif [ -f /etc/lsb-release ]; then
