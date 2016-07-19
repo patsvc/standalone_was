@@ -60,14 +60,12 @@ parameters:
     description: This is the password for the root user of the system
     label: Password (root)
     type: string
-    default: test
     hidden: True
     
   virtuser_password: 
     description: This is the password for the virtuser user of the system
     label: Password (virtuser)
     type: string
-    default: test
     hidden: True
  
   sw_repo_root:
@@ -122,7 +120,6 @@ parameters:
     description: password for the Websphere operating system user
     label: WAS OS Users password
     hidden: True
-    default: test
    
   was_admin_username:
     type: string
@@ -135,7 +132,6 @@ parameters:
     description: Admin password login was
     label: WAS Console password
     hidden: True
-    default: test
         
   was_install_dir:
     type: string
