@@ -27,16 +27,19 @@ parameters:
     type: string
     description: 'Generated to reference ''patterns-service-dev-net'' network.'
     default: 'fbd19302-f247-4816-b53e-a664f3dc72c1'
+    label: Private network  ID
 
   subnet_id_46fcd6d7-017e-437b-9921-d7fb9f76a7f2:
     type: string
     description: 'Generated to reference subnet ''46fcd6d7-017e-437b-9921-d7fb9f76a7f2''.'
     default: '46fcd6d7-017e-437b-9921-d7fb9f76a7f2'
+    label: Private network subnet
 
   public_network_id:
     type: string
     description: 'Generated for floating IP'
     default: 'public_network_id'
+    label: Public network ID
   
   security_group:
     type: string
