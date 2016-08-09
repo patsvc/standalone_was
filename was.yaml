@@ -104,9 +104,9 @@ parameters:
 
   zeron_enabled:
     type: string
-    description: Enable life cycle management
+    description: Life Cycle Management component gets added to each VM which helps provide web user interface to life cycle management of the stack.
     label: Enable life cycle management
-    default: true
+    default: false
     constraints:
     - allowed_values: [true,false]
    
